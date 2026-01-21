@@ -1,0 +1,7 @@
+streamlit
+requests
+pandas
+openpyxl
+qdrant-client>=1.7.0
+sentence-transformers
+torch --extra-index-url https://download.pytorch.org/whl/cpu

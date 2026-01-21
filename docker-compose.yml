@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_db
+    ports:
+      - "${QDRANT_EXTERNAL_PORT}:6333"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+
+  app:
+    build: .
+    container_name: gigachat_bot
+    ports:
+      - "${APP_EXTERNAL_PORT}:8501"
+    volumes:
+      - ./app:/app
+      - ./data:/app/data
+      - ./certs:/app/certs
+      - ./model_cache:/root/.cache/huggingface
+    environment:
+      QDRANT_HOST: ${QDRANT_HOST}
+      QDRANT_PORT: ${QDRANT_PORT}
+      GIGACHAT_AUTH: ${GIGACHAT_AUTH}
+    depends_on:
+      - qdrant
